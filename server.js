@@ -3,25 +3,22 @@ var url = require("url");
 
 
 function start(route, handle) {
+
     function onRequest(request, response) {
-        var postData = "";
+
+        //获取请求路径
         var pathname = url.parse(request.url).pathname;
+
+        //排除请求ico
         if (pathname == '/favicon.ico') {
             return false;
         }
+
         console.log("Request for " + pathname + " received.");
 
-        request.setEncoding('utf8');
+        //调用路由，转发给不同的请求处理函数
+        route(handle, pathname, response, request);
 
-        request.addListener("data", function (postDataChunk) {
-            postData += postDataChunk;
-            console.log("Received POST data chunk '" +
-                postDataChunk + "'.");
-        });
-
-        request.addListener("end", function () {
-            route(handle, pathname, response, postData);
-        });
     }
 
     http.createServer(onRequest).listen(8888);
