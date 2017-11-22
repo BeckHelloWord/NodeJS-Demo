@@ -1,8 +1,8 @@
 function route(handle, pathname, response, request) {
 
   if (typeof handle[pathname] === 'function') {
-
-    return handle[pathname](response, request);
+    //根据路由调用不同的处理函数
+    handle[pathname](response, request);
 
   } else {
 
